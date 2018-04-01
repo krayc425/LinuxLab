@@ -4,7 +4,7 @@ a=0
 b=1
 i=1
 while [[ "$i" -le 10 ]]; do
-	echo "$b"
+	echo "$a"
 
 	a=$(($a+$b))
 	t=$a

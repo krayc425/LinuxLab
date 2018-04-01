@@ -106,7 +106,7 @@ a=0
 b=1
 i=1
 while [[ "$i" -le 10 ]]; do
-	echo "$b"
+	echo "$a"
 
 	a=$(($a+$b))
 	t=$a
@@ -123,6 +123,7 @@ exit 0
 ```
 ➜  ~ source /Users/Kray/Documents/Software\ Engineering/Linux程序设计/LinuxLab/Homework2/2_3.sh
 Fibonacci 1 - 10:
+0
 1
 1
 2
@@ -132,7 +133,6 @@ Fibonacci 1 - 10:
 13
 21
 34
-55
 
 [进程已完成]
 ```
