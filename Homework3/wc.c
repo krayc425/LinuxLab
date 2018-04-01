@@ -6,9 +6,9 @@ void countChar(char ch);
 int char_count = 0;
 int word_count = 0;
 int line_count = 0;
+int previous_is_blank = 0;
 
 int main(int argc, char **argv) {
-
     if (argc != 1) {
         FILE *file = fopen(argv[1], "r");
         if (file == NULL) {
@@ -43,7 +43,12 @@ void countChar(char ch) {
     char_count++;
     if (ch == ' ' || ch == '\n' || ch == '\r' || ch == '\f'
         || ch == '\t' || ch == '\v') {
-        word_count++;
+        if (previous_is_blank == 0) {
+            word_count++;
+            previous_is_blank = 1;
+        }
+    } else {
+        previous_is_blank = 0;
     }
     if (ch == '\n') {
         line_count++;

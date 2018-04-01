@@ -21,28 +21,32 @@ int ls_a(char *path);
 int ls_i(char *path);
 
 int main(int argc, char **argv) {
-    struct stat statbuf;
+    struct stat st;
     char *path;
     char tempPath[128];
     if (path == NULL || path[0] == '-') {
         path = tempPath;
         getcwd(path, 128);
     }
+    
+    if(stat(path, &st) < 0) {
+        printf("Error: No such directory or file\n");
+        return 0;
+    }
 
 	if (argc == 1) {
-	    if (S_ISDIR(statbuf.st_mode)) {
+	    if (S_ISDIR(st.st_mode)) {
 			showDirectory(path);
 	    } else {
 			printf("%s\n", path);
 	    }
-	    return 0;
+	    return 1;
 	} else if (argc == 3) {
    		path = argv[2];
 	}
 
     char opt;
-    char *optString = "ldRai";
-    while((opt = getopt(argc, argv, optString)) != -1) {
+    while((opt = getopt(argc, argv, "ldRai")) != -1) {
         switch (opt) {
             case 'l':
 		        ls_l(path);
@@ -65,7 +69,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    return 0;
+    return 1;
 }
 
 int ls_l(char *path) {
@@ -86,8 +90,8 @@ int showFile(char *path, char *filename) {
 	struct stat st;							
 	stat(path, &st);
 	
-	struct passwd *pw;
-	struct group *gr;						
+	struct passwd *passwd;
+	struct group *group;
 	struct tm *tm;							
 	
 	switch(st.st_mode & S_IFMT) {
@@ -133,9 +137,9 @@ int showFile(char *path, char *filename) {
         }
     }
 	
-	pw = getpwuid(st.st_uid);
-    gr = getgrgid(st.st_gid);
-	printf("%2d %s %s %4lld", st.st_nlink, pw->pw_name, gr->gr_name, st.st_size);
+	passwd = getpwuid(st.st_uid);
+    group = getgrgid(st.st_gid);
+	printf("%2d %s %s %4lld", st.st_nlink, passwd->pw_name, group->gr_name, st.st_size);
 	
 	tm = localtime(&st.st_ctime);
     printf(" %04d-%02d-%02d %02d:%02d",tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min);
@@ -157,7 +161,7 @@ int showDirectory(char *dirname) {
 		
 		if (stat(buf, &st) < 0) {
 			printf("Error: No such directory or file\n");
-            return -1;
+            return 0;
         }
 
         if (dirent->d_name[0] != '.') {
@@ -221,8 +225,9 @@ int showSubFile(char* path) {
 	printf("\n");
 
 	num--;
-	for (; num >= 0; num--) {
+    while (num >= 0) {
 		showSubFile(subPath[num]);
+        num--;
 	}
     return 1;
 }
