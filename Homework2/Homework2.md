@@ -8,7 +8,7 @@ Shell 脚本编写
 
 #### 解答
 
-```
+```bash
 #!/bin/sh
 echo "PATH: $PATH"
 echo "HOME: $HOME"
@@ -33,7 +33,7 @@ LOGNAME: Kray
 
 用 `while` 语句重写下列 Shell 脚本程序，以实现相同的功能：
 
-```
+```bash
 #!/bin/sh
 clear
 select item in Continue Finish
@@ -48,7 +48,7 @@ done
 
 #### 解答
 
-```
+```bash
 #!/bin/sh
 clear
 echo '1) Continue'
@@ -99,7 +99,7 @@ Wrong choice! Please select again!
 
 #### 解答
 
-```
+```bash
 #!/bin/sh
 echo 'Fibonacci 1 - 10:'
 a=0

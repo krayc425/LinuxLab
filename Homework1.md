@@ -12,25 +12,25 @@
 
 #### 1. 将当前目录下所有文件备份并压缩成`tar.gz`，如果成功再将备份拷贝到`/backup`目录下
 
-```
+```bash
 mkdir /backup && tar -czvf backup.tar.gz . && cp ./backup.tar.gz /backup
 ```
 
 #### 2. 将上述备份压缩后的文件解压到原来的目录
 
-```
+```bash
 tar -xzvf /backup -C .
 ```
 
 #### 3. 将当前目录下所有后缀为`.html`的文件的后缀改为`.htm`
 
-```
+```bash
 rename 's/.html/.htm/' ./*
 ```
 
 #### 4. 将当前目录下所有子目录下以`a`开头的`.cpp`文件改名为以`b`开头的`.c`文件
 
-```
+```bash
 find -name "a*.cpp" | xargs -i rename 's/(.*\/)a(.*)\.cpp$/$1b$2\.c/' {}```
     
 ## 第 2 题
@@ -47,37 +47,37 @@ find -name "a*.cpp" | xargs -i rename 's/(.*\/)a(.*)\.cpp$/$1b$2\.c/' {}```
 
 * DOS/Windows -> UNIX/Linux: 
 
-```
+```bash
 sed -i 's/\r$//' file.txt
 ```
 
 * UNIX/Linux -> DOS/Windows:
 
-```
+```bash
 sed -i 's/$/\r/' file.txt
 ```
 
 * DOS/Windows -> Mac:
 
-```
+```bash
 cat file.txt | tr -d "\n" > new_file.txt
 ```
 
 * Mac -> DOS/Windows:
 
-```
+```bash
 cat file.txt | tr "\r" "\n" | sed 's/$/\r/' > new_file.txt
 ```
  
 * UNIX/Linux -> Mac: 
 
-```
+```bash
 cat file.txt | tr "\n" "\r" > new_file.txt 
 ```
 
 * Mac -> UNIX/Linux: 
 
-```
+```bash
 cat file.txt | tr "\r" "\n" > new_file.txt
 ```
 
@@ -85,7 +85,7 @@ cat file.txt | tr "\r" "\n" > new_file.txt
 
 `/etc/fstab`文件包含了如下字段，通过空格或 Tab 分隔：
 
-```
+```bash
 <file system>	<dir>	<type>	<options>	<dump>	<pass>
 ```
 
@@ -130,7 +130,7 @@ krayc425@ubuntu:~/Desktop/LinuxTest$ cat /etc/fstab# /etc/fstab: static file sy
 
 #### 3. 用命令行实现： 从光盘制作一个`.iso`文件，如果成功将光盘弹出
 
-```
+```bash
 dd if=/dev/cdrom of=test.iso && umount /dev/cdrom && eject
 ```
 
@@ -179,7 +179,7 @@ dd if=/dev/cdrom of=test.iso && umount /dev/cdrom && eject
 3. 以第2步结果的每一条输出为参数，替换到`{}`中，然后执行`cp /gsl/.../Makefile /home/usrname/gsl/.../Makefile`
 4. 用`sh`运行脚本
 
-```
+```bash
 find /tmp/gsl -name 'Makefile' | sed 's/^\/tmp//' | xargs -i cp {}  /tmp/{} /home/usrname/{} | sh
 ```
 
