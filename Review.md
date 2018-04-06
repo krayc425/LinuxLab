@@ -47,6 +47,8 @@ A free Unix-type operating system developed under the GNU General Public License
 
 # [MBR 和 GPT](http://www.eassos.cn/jiao-cheng/ying-pan/mbr-vs-gpt.php)
 
+![](https://ws2.sinaimg.cn/large/006tNc79gy1fq2zqp84yhj30ty0h6myb.jpg)
+
 # 文件系统
 
 * 操作系统中负责存取和管理文件的部分
@@ -116,10 +118,10 @@ make install
 
 ![](https://ws3.sinaimg.cn/large/006tNc79ly1fq0ve0lw3mj311q0diq59.jpg)
 
-|命令|说明|
+|目录|说明|
 |---|---|
 |`/bin`|必要的命令二进制文件。包含了会被系统管理者和用户使用的命令，但是需要在没有任何文件系统挂载时使用。也可能会在脚本文件中间接使用||`/boot`|Boot Loader 相关的静态文件。 包含了所有需要在加载阶段使用的文件(不含一些不需要在启动阶段用到的配置文件)。保存了所有内核在执行用户态程序之前用到的数据||`/dev`|设备文件。是一些特殊或设备的文件||`/etc`|主机相关的系统配置。主要包含了配置文件||`/lib`|必要的共享二进制文件或内核模块。比如在 `/bin` 或 `/sbin` 里需要用到的库||`/media`|可删除 media 的挂载点。如软盘等||`/mnt`|临时文件系统的挂载点||`/opt`|额外的应用软件包安装目录||`/sbin`|必要的系统二进制文件||`/srv`|系统提供的有关服务的数据||`/tem`|临时文件||`/usr`|第二级层次树。`/usr`是共享的、只读的数据。大型的软件包不应该使用 `/usr` 下的层次||`/var`|可变数据||`/home`|用户 home 目录|
-|`/lib<qual>`|必要共享二进制文件的可选格式||`/root`|ROOT 用户的 HOME 目录|
+|`/lib<qual>`|必要共享二进制文件的可选格式||`/root`|Root 用户的 HOME 目录|
 
 # 文件权限
 
@@ -159,7 +161,7 @@ other   = 5 = 101b = r-x
 
 # UNIX
 
-* 早期的UNIX
+* 早期的 UNIX
     * 一个简单的文件系统
     * 一个进程子系统和一个 Shell
 * 内核和核外程序
@@ -294,7 +296,7 @@ read –p “Enter your name:” name
 
 单引号内的所有字符都保持它本身字符的意思，而不会被 bash 进行解释，例如，`$`就是`$`本身而不再是 bash 的变量引用符，`\`就是`\`本身而不再是 bash 的转义字符。
 
-除了`$`、`(不是单引号)和`\`外，双引号内的所有字符将保持字符本身的含义而不被 bash 解释。
+除了`$`、反引号和`\`外，双引号内的所有字符将保持字符本身的含义而不被 bash 解释。
 
 ## 环境变量
 
@@ -311,7 +313,7 @@ Shell 环境提供的变量，通常使用大写字母做名字。
 * 查看和设置环境变量
     * `echo`：显示环境变量 `echo $PATH`
     * `env`：显示系统所有的环境变量
-    * `set`：显示本地定义的 shell 变量
+    * `set`：显示本地定义的 Shell 变量
     * `export`：设置新的环境变量 `export HELLO=”hello”`
 
 ```bash
@@ -335,7 +337,7 @@ export PATH
 
 # 条件测试
 
-`test expression` 或 `[ expression ]` (注意expression**前后需要有空格**)或`((expression))`，但是`(())`里只能使用 C 风格的比较(< <= > >= !=)(无法使用 `-eq` 等比较命令)
+`test expression`或`[ expression ]`（注意expression**前后需要有空格**）或`((expression))`，但是`(())`里只能使用 C 风格的比较（< <= > >= !=，无法使用 `-eq` 等比较命令）
 
 ![](https://ws2.sinaimg.cn/large/006tNc79ly1fq0w8mt2d2j311g1a4wtn.jpg)
 
@@ -344,11 +346,25 @@ export PATH
 需要计算`var1=var2+-*/var3`这种
 
 * 使用 `let` 命令
-    * `let result=num1+num2`(变量前不需要添加`$`)
+    * `let result=num1+num2`（变量前不需要添加`$`）
 * 使用`$[]`操作符 
     * `result=$[num1+num2]`
 * 使用`$(())`
     * `result=$((num1+num2))`
+
+##### 例
+
+以下脚本输出三个 3
+
+```
+#!/bin/sh
+a=1
+b=2
+echo $((a + b))
+echo $[a + b]
+let c=a+b
+echo $c
+```
 
 # 条件语句
     
@@ -373,14 +389,14 @@ fi
 
 ```bash
 #!/bin/sh
-echo “Is this morning? Please answer yes or no.” 
+echo "Is this morning? Please answer yes or no."
 read answer
-if [ “$answer” = “yes” ]; then
+if [ "$answer" = "yes" ]; then
     echo “Good morning”
-elif [ “$answer” = “no” ]; then
-    echo “Good afternoon” 
+elif [ "$answer" = "no" ]; then
+    echo "Good afternoon"
 else
-    echo “Sorry, $answer not recognized. Enter yes or no”
+    echo "Sorry, $answer not recognized. Enter yes or no"
     exit 1 
 fi
 exit 0
@@ -402,12 +418,12 @@ esac
 
 ```bash
 #!/bin/sh
-echo “Is this morning? Please answer yes or no.” 
+echo "Is this morning? Please answer yes or no."
 read answer
-case “$answer” in
-    yes | y | Yes | YES) echo “Good morning!” ;; 
-    no | n | No | NO) echo “Good afternoon!” ;; 
-    *) echo “Sorry, answer not recognized.” ;;
+case "$answer" in
+    yes | y | Yes | YES) echo "Good morning!" ;; 
+    no | n | No | NO) echo "Good afternoon!" ;; 
+    *) echo "Sorry, answer not recognized." ;;
 esac 
 exit 0
 ```
@@ -448,14 +464,14 @@ done
 
 ```bash
 quit=n
-while [ “$quit” != “y” ]; do 
+while [ "$quit" != "y" ]; do 
     read menu_choice
-    case “$menu_choice” in
+    case "$menu_choice" in
         a) do_something;;
         b) do_anotherthing;;
         ...
         q|Q) quit=y;;
-        *) echo “Sorry, choice not recognized.”;;
+        *) echo "Sorry, choice not recognized.";;
     esac 
 done
 ```
@@ -471,7 +487,7 @@ do
         then
             break # Skip entire rest of loop. 
         fi
-    echo -n "$a ” 
+    echo -n "$a"
 done
 ```
 
@@ -504,10 +520,10 @@ done
 clear
 select item in Continue Finish
 do
-    case “$item” in
+    case "$item" in
         Continue) ;;
         Finish) break ;;
-        *) echo “Wrong choice! Please select again!” ;;
+        *) echo "Wrong choice! Please select again!" ;;
     esac 
 done
 ```
@@ -539,11 +555,11 @@ done
 * `exit n`：以退出码 n 退出脚本执行
 * `return`：函数返回
 * **export**：将变量导出到 Shell，使之成为 Shell 的环境变量 
-* **set**：为 shell 设置参数变量
+* **set**：为 Shell 设置参数变量
 * **unset**：从环境中删除变量或函数
 * `trap`：指定在收到操作系统信号后执行的动作 
     * trap 之后跟随一条命令，如：`trap 'echo something' INT` 意为脚本在收到 INT 信号（`Ctrl+C`）时执行`echo something`
-* “`：`”（冒号命令）：空命令
+* “`:`”（冒号命令）：空命令
 * “`.`”（句点命令）或 `source`：在当前 Shell 中执行命令
 
 # 捕获命令输出
@@ -557,8 +573,8 @@ $(command)
 
 ```bash
 #!/bin/sh
-echo “The current directory is $PWD” 
-echo “The current directory is $(pwd)”
+echo "The current directory is $PWD"
+echo "The current directory is $(pwd)"
 exit 0
 ```
 
@@ -569,7 +585,7 @@ exit 0
 ```bash
 #!/bin/sh
 x=0
-while [ “$x” –ne 10 ]; do
+while [ "$x" –ne 10 ]; do
     echo $x
     x=$(($x+1))
 done
@@ -584,7 +600,7 @@ exit 0
 ```bash
 #!/bin/sh
 i=0
-while [ “$i” –ne 10 ]; do
+while [ "$i" –ne 10 ]; do
     touch “${i}_tmp”
     i=$(($i+1)) 
 done
@@ -613,24 +629,24 @@ Hello, this is a here document.
 !CATINPUT!
 ```
 
+# Ch3
+
 # 编译链接
 
 ![](https://ws3.sinaimg.cn/large/006tNc79ly1fq0x5yqoujj310i0mmn7x.jpg)
 
 * 头文件和`#include`（预处理 – 编译时处理）
 * 为什么要做链接?（link）
-    
     * 编译的时候源代码和目标文件是一一对应的，连接的时候目标文件和可执行文件不是一一对应的，最终多个目标文件生成的可执行文件只有一个。
-    *（连接时再进行重组, 目标文件里已经是native binary 了，但是只有对应源代码文件的机器码，但是执行不起来，因为可能缺少调用其他源代码文件的代码）
-    
+    * 连接时再进行重组, 目标文件里已经是 native binary 了，但是只有对应源代码文件的机器码，但是执行不起来，因为可能缺少调用其他源代码文件的代码。
 * 静态库（`.a`）与动态库（`.so`）
+    * 静态库的代码在**编译**过程中已经被载入可执行程序，因此体积比较大
+    * 动态库的代码在**可执行程序运行**时才载入内存，在编译过程中仅简单的引用，因此代码体积比较小
 
 # 编译器分前端和后端
 
 * 前面处理语言差异
 * 后面统一分析、编译
-
-# Ch3
 
 # gcc
 
@@ -685,9 +701,9 @@ target ... : prerequisites ...
     ...
 ```
 
-* target 是一个目标文件，可以是 Object File，也可以是执行文件
+* target 是一个目标文件，可以是 object File，也可以是执行文件
 * prerequisites 是要生成 target 所需要的文件或是目标
-* command 是 make 需要执行的命令（可以是任意的Shell命令）
+* command 是 make 需要执行的命令（可以是任意的 Shell 命令）
 
 ## 执行次序
 
@@ -719,9 +735,8 @@ clean :
 
 ## 文件系统
 
-* A collection of files and certain of their attributes.
-* It provides a name space for file serial numbers referring to those files.
-* 文件和其属性的集合。FS 提供了指向这些文件的序列号。
+* 文件系统是文件及其属性的集合。
+* 文件系统提供了指向这些文件的序列号。
 
 # 7 种文件类型
 
@@ -756,23 +771,24 @@ VFS 在内核中与其他的内核模块的协同关系
 ## 组成部分
 
 ### 超级块
+
 - 描述当前的文件系统
 - 来标识文件系统/分区的
-- 标定当前所要访问的稳件系统
-- 进程要打开的文件在哪个分区上，是什么文件系统， 以及文件系统的信息，需要什么方式来访问
+- 标定当前所要访问的文件系统
+- 进程要打开的文件在哪个分区上，是什么文件系统，以及文件系统的信息，需要什么方式来访问
 
 ### inode 对象
 
-- 标志文件
 - 磁盘上的文件用 i-node 标识
-- 全称index-node，索引结点。索引结点相同表示是分区下的同一个文件
-- 用来标识文件，只要知道索引结点就可以找到文件，Linux 可以同一个文件件有几个不同的文件名
+- 全称 index-node，索引结点
+- 索引结点相同表示是分区下的同一个文件
+- 用来标识文件，只要知道索引结点就可以找到文件，Linux 可以同一个文件有几个不同的文件名
 - 也就是说可以在目录项对象中对应两个文件名，但是其实索引节点只有一个，但是可以由两个文件名来访问它，指向它
 
 ### 文件对象
 
 - 描述文件当前的打开状态
-- 在一个进程还没运 时，超级块、索引节点、目录项对象都是有的，因为系统肯定会知道当前系统的文件系统信息，**但是文件对象是没有的**，只有在创建的进程启动之后，cp 调完 open 之后(之前可能有内存拷贝、变量赋值...)，也就是说只有把一个文件打开之后，VFS 才会在内核建立一个文件对象
+- 在一个进程还没运行时，超级块、索引节点、目录项对象都是有的，因为系统肯定会知道当前系统的文件系统信息，**但是文件对象是没有的**，只有在创建的进程启动之后，cp 调完 open 之后(之前可能有内存拷贝、变量赋值...)，也就是说只有把一个文件打开之后，VFS 才会在内核建立一个文件对象
 - 进程结束之后一定要 close，这样才可以把文件对象释放掉
 - 打开的文件一定要关闭，文件对象存在于打开和关闭之间
 - 用来记录文件对象记录当前进程把这个文件读到哪，以什么方式在读
@@ -780,7 +796,7 @@ VFS 在内核中与其他的内核模块的协同关系
 
 ### 目录对象
 
-- 描述文件的目录关系（inode号和文件名的对应关系）是路径的一部份
+- 描述文件的目录关系（inode号和文件名的对应关系），是路径的一部份
 - 记录文件名
 - 磁盘上的文件不以目录形式组织，由文件系统来决定由什么形式来组织
 - 以上两种不同的组织形式之间的对应关系就放在目录项对象
@@ -789,19 +805,21 @@ VFS 在内核中与其他的内核模块的协同关系
 
 ## 硬链接
 
-- 不同文件名对应同一个inode
+- 不同文件名对应同一个 inode
 - 不能跨越文件系统
-- 对应**系统调用link**
+- 对应**系统调用 link**
 - `ls -l`的链接计数**只包括硬链接**
 
 ## 软链接/符号链接
 
-- 存储被链接文件的文件名（不是inode号）来实现链接
+- 存储被链接文件的文件名（不是 inode 号）来实现链接
 - 可以跨越文件系统
 - 对应**系统调用symlink**
+- 软链接 类似于 Windows 下的快捷方式，删除原文件后（原文件也没有任何硬链接文件）软连接不可用
 
-* 软链接 类似于 windows 下的快捷方式，删除原文件后（原文件也没有任何硬链接文件）软连接不可用
-* 硬链接创建 
+## 创建
+
+* 硬链接
 
 ```bash
 ln [原文件名] [连接文件名]
@@ -831,7 +849,7 @@ ln –s [原文件名] [连接文件名]
 # 文件描述符
 
 * `int fd`
-* 一个小的非负整数
+* 一个小的**非负整数**
 
 |流|文件描述符|
 |:-:|:-:|
@@ -841,7 +859,7 @@ ln –s [原文件名] [连接文件名]
 
 # 基础 I/O 系统调用
 
-一般的文件操作流程：`open-read/write-[lseek]-close`
+一般的文件操作流程：`open`→`read/write`→`[lseek]`→`close`
 
 ##### 例
 
@@ -883,14 +901,14 @@ int creat(const char *pathname, mode_t mode);
 
 * `pathname`：文件名
 * `flags`：文件打开模式，表示以什么方式打开，可以是 `O_RDONLY`、`O_WRONLY`、`
-O_RDWR`，依次表示只读、只写、读写中的一个。以上 3 个模式可以和一些附加模式做按位或(|)运算，添加其他的模式。如:
+O_RDWR`，依次表示只读、只写、读写中的一个。以上 3 个模式可以和一些附加模式做按位或（|）运算，添加其他的模式。如:
     * `O_APPEND`：以追加模式打开
-    * `O_TRUNC`：若文件存在，则长度被截为 0，属性不变。(覆盖模式)
+    * `O_TRUNC`：若文件存在，则长度被截为 0，属性不变。（覆盖模式）
     * `O_CREAT`：如果文件不存在，则创建它
     * `O_EXCL`：同 `O_CREAT` 一起使用，使得当文件存在的时候会出现错误
-    * `O_NONBLOCK`：对于设备文件，以 `O_NONBLOCK` 方式打开可以做非阻塞 I/O(Nonblock I/O)
+    * `O_NONBLOCK`：对于设备文件，以 `O_NONBLOCK` 方式打开可以做非阻塞 I/O（Nonblock I/O）
     * 创建一个文件等价于用 `O_CREAT|O_WRONLY|O_TRUNC` 模式打开文件
-* `mode`：当创建一个文件时指定文件的权限。值为一个无符号整数，低 9 位确定权限(同 `chmod` 里使用的值)
+* `mode`：当创建一个文件时指定文件的权限。值为一个无符号整数，低 9 位确定权限（同 `chmod` 里使用的值）
 
 ## close
 
@@ -1017,8 +1035,8 @@ int fcntl(int fd, int cmd, struct flock *lock);
 * `fd`：对应的文件描述符
 * `cmd`：具体的操作，fcntl 进行的操作依赖于 cmd。有以下取值：
     * `F_DUPFD`：复制文件描述符，返回新的文件描述符。
-    * `F_GETFD/F_SETFD`：获取/设置文件描述符标志(目前就只有 `close-on-exec` 标记)。这个标志的目的是解决 fork 子进程执行其他任务(使用 `exec`、`excel` 等命令)导致了父进程的文件描述符被复制到子进程中 (实际子进程不需要)，使得对应文件描述符无法被之后需要的进程 获取。设置了这个标记后可以使得子进程在执行 exce 等命令时释放对应的文件描述符资源。
-    * `F_GETFL/F_SETFL`：获得/设置文件状态标志(open/creat 中的 flags 参数)，目前只能更改 `O_APPEND`, `O_ASYNC`, `O_DIRECT`, `O_NOATIME`, `O_NONBLOCK`
+    * `F_GETFD/F_SETFD`：获取/设置文件描述符标志（目前就只有 `close-on-exec` 标记）。这个标志的目的是解决 fork 子进程执行其他任务（使用 `exec`、`excel` 等命令）导致了父进程的文件描述符被复制到子进程中（实际子进程不需要），使得对应文件描述符无法被之后需要的进程获取。设置了这个标记后可以使得子进程在执行 `exce` 等命令时释放对应的文件描述符资源。
+    * `F_GETFL/F_SETFL`：获得/设置文件状态标志（`open/creat` 中的 `flags` 参数），目前只能更改 `O_APPEND`, `O_ASYNC`, `O_DIRECT`, `O_NOATIME`, `O_NONBLOCK`
     * `F_GETOWN/F_SETOWN`： 管理 I/O 可用相关的信号。获得或设置当前文件描述符会接受 `SIGIO` 和 `SIGURG` 信号的进程或进程组编号
     * `F_GETLK/F_SETLK/F_SETLKW`： 获得/设置文件锁，设置为 `F_GETLK` 时需要传入 `flock *` 指针用于存放最后的锁信息。`S_SETLK` 需要传入 `flock *` 指针表示需要改变的锁的内容，如果不能被设置，则立即返回 `EAGAIN`。`S_SETLKW` 同 `S_SETLK`，但是在锁无法设置时会阻塞等待任务完成。
 
@@ -1041,7 +1059,7 @@ int ioctl(int d, int request, ...);
 
 # 标准 I/O 库
 
-* 使用 `FILE *` 指向文件流(类似于 `fd` 的作用)
+* 使用 `FILE *` 指向文件流（类似于 `fd` 的作用）
 * **预定义** 3 个指针：标准输入（stdin），标准输出（stdout），标准错误（stderr）
 
 * 3 种缓冲
@@ -1095,8 +1113,8 @@ int fclose(FILE *stream);
     * `w`：以覆盖方式写
     * `a`：以追加方式写
     * `r+`：以读写方式打开
-    * `w+`：以读写方式打开，文件不存在则创建;覆盖方式写
-    * `a+`：以读写方式打开，文件不存在则创建;追加方式写
+    * `w+`：以读写方式打开，文件不存在则创建；覆盖方式写
+    * `a+`：以读写方式打开，文件不存在则创建；追加方式写
 * `stream`：需要关闭的文件流
 
 ## getc/fgetc/getchar
@@ -1707,7 +1725,7 @@ int lockf(int fd, int cmd, off_t len);
 # 模块依赖
 
 * 一个模块 A 引用另一个模块 B 所导出的符号，我们就说模块 B 被模块 A 引用。
-* 如果要装载模块 A，必须先要装载模块 B。否则，模块B所导出的那些符号的引用就不可能被链接到模块 A 中。这种模块间的相互关系就叫做**模块依赖**。
+* 如果要装载模块 A，必须先要装载模块 B。否则，模块 B 所导出的那些符号的引用就不可能被链接到模块 A 中。这种模块间的相互关系就叫做**模块依赖**。
 * 自动按需加载
 * 自动按需卸载
 * moddep
