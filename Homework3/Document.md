@@ -45,7 +45,7 @@ Document.md	ls.c	makefile	wc.c	wc	Homework3.md	ls
 2. 若没有给定路径，则默认是当前目录路径。
 3. 若没有附加参数（`-ldRai`），则直接输出目录/文件名。若有，则对应进行处理。
 4. 通过`st.st_mode & S_IFMT`的值来判断是目录还是文件。
-5. 主要还是了解`struct star`、`struct dirent`结构体的组成，大致如下：
+5. 主要还是了解`struct stat`、`struct dirent`结构体的组成，大致如下：
 
 ```C
 struct stat {
